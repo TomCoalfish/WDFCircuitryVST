@@ -2065,7 +2065,7 @@ public:
     
     void createWDF()
     {
-        // --- actual component values fc = 400Hz
+        // --- actual component values fc = 34Hz
         double R3_value = 10000;
         double C23_value = 470e-9;
         
@@ -2141,8 +2141,10 @@ public:
         double Volume_value = getVolume();
 
         // --- set adapter components
+        // High pass filter 100Hz - 8000Hz (bring down)
         seriesAdaptor_C3.setComponent(wdfComponent::C, C3_value);
         seriesAdaptor_Tone.setComponent(wdfComponent::R, Tone_value);
+        // Volume stage
         parallelAdaptor_C29.setComponent(wdfComponent::C, C29_value);
         parallelAdaptor_Volume.setComponent(wdfComponent::R, Volume_value);
         //seriesTerminatedAdaptor_outR.setComponent(wdfComponent::R, 0.0);
