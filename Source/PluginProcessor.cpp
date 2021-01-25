@@ -10,6 +10,7 @@
 #include "PluginEditor.h"
 #include <JuceHeader.h>
 #include "FilterObjects.h"
+
 //==============================================================================
 DigitalFiltersAudioProcessor::DigitalFiltersAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -29,6 +30,7 @@ tree(*this, nullptr, "Parameter",
     std::make_unique<juce::AudioParameterFloat> ("gain", "Gain", 0.0f, 48.0f, 0.0f),
 
     std::make_unique<juce::AudioParameterFloat> ("volume", "Volume", juce::NormalisableRange<float> (0.0f, 10000.0f, 1.0f, 0.30f), 1000.0f)   } )
+
 
 
 
@@ -114,17 +116,10 @@ void DigitalFiltersAudioProcessor::prepareToPlay (double sampleRate, int samples
     spec.sampleRate = sampleRate;
     spec.maximumBlockSize = samplesPerBlock;
     spec.numChannels = getMainBusNumOutputChannels();
-    //butterFilter.reset(sampleRate);
+
     lowPassFilter.prepare(spec);
     lowPassFilter.reset();
-    //butterFilter.createWDF();
-    
-    filters[0].createWDF();
-    filters[1].createWDF();
-    
-    filters[0].reset(sampleRate);
-    filters[1].reset(sampleRate);
-    
+
     preGainCircuit[0].createWDF();
     preGainCircuit[1].createWDF();
     
@@ -173,15 +168,8 @@ bool DigitalFiltersAudioProcessor::isBusesLayoutSupported (const BusesLayout& la
 void DigitalFiltersAudioProcessor::updateFilter ()
 {
     float centreFreq = *tree.getRawParameterValue("centreFreq");
-    //float gain = *tree.getRawParameterValue("gain");
     float volume = *tree.getRawParameterValue("volume");
-
-
-   /* postGainCircuit[0].setTone(centreFreq);
-    postGainCircuit[1].setTone(centreFreq);
-    
-    postGainCircuit[0].setVolume(volume);
-    postGainCircuit[1].setVolume(volume);*/
+    float gain = *tree.getRawParameterValue("gain");
     
     for (int channel = 0; channel < getTotalNumInputChannels(); channel++) {
         postGainCircuit[channel].setTone(centreFreq);
@@ -203,8 +191,6 @@ void DigitalFiltersAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
-    
-    
 
     for (int channel = 0; channel < totalNumInputChannels; channel++)
     {
@@ -230,18 +216,7 @@ void DigitalFiltersAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
         }
         
         
-        /*for (int sample = 0; sample < buffer.getNumSamples(); sample++)
-        {
 
-            float inputSample = inputBuffer[sample];
-            
-            double filterOut = filters[channel].processAudioSample(inputSample);
-            
-            //double postGainCircuitOut = postGainCircuit[channel].processAudioSample(preGainCircuitOut);
-            
-            outputData[sample] = (float)filterOut;
-
-        }*/
     }
 
 }
