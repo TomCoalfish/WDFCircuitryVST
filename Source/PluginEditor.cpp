@@ -15,7 +15,7 @@ DigitalFiltersAudioProcessorEditor::DigitalFiltersAudioProcessorEditor (DigitalF
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-        setSize (400, 600);
+        setSize (350, 400);
     
     // TONE CONTROL GUI COMPONENTS
     toneControlFreqDial.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
@@ -70,8 +70,8 @@ void DigitalFiltersAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
     
-    volumeDial.setBounds(225, 150, 100, 100);
-    toneControlFreqDial.setBounds(150, 275, 100, 100);
+    volumeDial.setBounds(50, 150, 100, 100);
+    toneControlFreqDial.setBounds(200, 150, 100, 100);
 }
 
 void DigitalFiltersAudioProcessorEditor::filterButtonClicked()
