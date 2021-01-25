@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "FilterObjects.h"
+#include "Distortion.h"
 
 //==============================================================================
 /**
@@ -60,9 +61,7 @@ private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DigitalFiltersAudioProcessor)
     
-    // One filter for each speaker
-    WDFButterLPF3 filters[2];
-    
+    // One filter for each speaker    
     WDFPreGainDistortionCircuit preGainCircuit[2];
     WDFPostGainDistortionCircuit postGainCircuit[2];
     
